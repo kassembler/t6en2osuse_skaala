@@ -60,7 +60,7 @@ def loo_p2ring_RV022U(aasta="2024", sugu="1", maakond="1", rahvus="1"):
           "selection": {"filter": "item", "values": [rahvus]}
         }
       ],
-  "response": {"format": "json"}
+  "response": {"format": "json-stat"}
 }
 
 def fetch_v22rtus(url, query):
@@ -71,8 +71,13 @@ def fetch_v22rtus(url, query):
     return data
 
 s6iduki6nnetused = fetch_v22rtus(url_vigastused, loo_p2ring_VIG10("2024", "0", "V01-V99", "0"))
-mehed_s6iduki6nnetuses = s6iduki6nnetused['dataset']['value'][1]/s6iduki6nnetused['dataset']['value'][0] #P(S6idukiõnnetuses kannatanu on meessoost)
-print(mehed_s6iduki6nnetuses)
+P_mehed_s6iduki6nnetuses = s6iduki6nnetused['dataset']['value'][1]/s6iduki6nnetused['dataset']['value'][0]
+print(P_mehed_s6iduki6nnetuses) #P(S6idukiõnnetuses kannatanu on meessoost)
+
+onnetused = fetch_v22rtus(url_vigastused, loo_p2ring_VIG10("2024", "0", "V01-Y34", "0"))
+rahvaarv = fetch_v22rtus(url_rahvaarv, loo_p2ring_RV022U())
+P_6nnetusse_sattumine = onnetused['dataset']['value'][0]/rahvaarv['dataset']['value'][0]
+print(P_6nnetusse_sattumine) #P(Kui suur on t6en2osus sattuda 6nnetusse aasta kohta)
 #print(json.dumps(data, indent=2))
 
 #print("Status:", response.status_code)
