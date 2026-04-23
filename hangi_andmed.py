@@ -71,9 +71,9 @@ def hangi_v22rtus(url, query):
     return data
 
 def hangi_t6en2osused():
-    s6iduki6nnetused = fetch_v22rtus(url_vigastused, loo_p2ring_VIG10("2024", "0", "V01-V99", "0"))
-    onnetused = fetch_v22rtus(url_vigastused, loo_p2ring_VIG10("2024", "0", "V01-Y34", "0"))
-    rahvaarv = fetch_v22rtus(url_rahvaarv, loo_p2ring_RV022U())
+    s6iduki6nnetused = hangi_v22rtus(url_vigastused, loo_p2ring_VIG10("2024", "0", "V01-V99", "0"))
+    onnetused = hangi_v22rtus(url_vigastused, loo_p2ring_VIG10("2024", "0", "V01-Y34", "0"))
+    rahvaarv = hangi_v22rtus(url_rahvaarv, loo_p2ring_RV022U())
 
     P_mehed = s6iduki6nnetused['dataset']['value'][1] / s6iduki6nnetused['dataset']['value'][0]
     P_onnetus = onnetused['dataset']['value'][0] / rahvaarv['dataset']['value'][0]
