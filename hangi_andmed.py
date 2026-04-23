@@ -63,21 +63,36 @@ def loo_p2ring_RV022U(aasta="2024", sugu="1", maakond="1", rahvus="1"):
   "response": {"format": "json-stat"}
 }
 
-def fetch_v22rtus(url, query):
+def hangi_v22rtus(url, query):
     response = requests.post(url, json=query)
     response.raise_for_status()
     data = response.json()
     #print(data)
     return data
 
-s6iduki6nnetused = fetch_v22rtus(url_vigastused, loo_p2ring_VIG10("2024", "0", "V01-V99", "0"))
-P_mehed_s6iduki6nnetuses = s6iduki6nnetused['dataset']['value'][1]/s6iduki6nnetused['dataset']['value'][0]
-print(P_mehed_s6iduki6nnetuses) #P(S6idukiõnnetuses kannatanu on meessoost)
+def hangi_t6en2osused():
+    s6iduki6nnetused = fetch_v22rtus(url_vigastused, loo_p2ring_VIG10("2024", "0", "V01-V99", "0"))
+    onnetused = fetch_v22rtus(url_vigastused, loo_p2ring_VIG10("2024", "0", "V01-Y34", "0"))
+    rahvaarv = fetch_v22rtus(url_rahvaarv, loo_p2ring_RV022U())
 
-onnetused = fetch_v22rtus(url_vigastused, loo_p2ring_VIG10("2024", "0", "V01-Y34", "0"))
-rahvaarv = fetch_v22rtus(url_rahvaarv, loo_p2ring_RV022U())
-P_6nnetusse_sattumine = onnetused['dataset']['value'][0]/rahvaarv['dataset']['value'][0]
-print(P_6nnetusse_sattumine) #P(Kui suur on t6en2osus sattuda 6nnetusse aasta kohta)
+    P_mehed = s6iduki6nnetused['dataset']['value'][1] / s6iduki6nnetused['dataset']['value'][0]
+    P_onnetus = onnetused['dataset']['value'][0] / rahvaarv['dataset']['value'][0]
+
+    return [
+        ("Sõidukiõnnetuses kannatanu on meessoost ", P_mehed), 
+        ("Kui suur on tõenäosus sattuda õnnetusse aasta kohta ", P_onnetus),
+        ("Mündivise ", 0.5),
+        ("Täringul 6 veeretamine ", 1/6),
+    ]
+
+# s6iduki6nnetused = fetch_v22rtus(url_vigastused, loo_p2ring_VIG10("2024", "0", "V01-V99", "0"))
+# P_mehed_s6iduki6nnetuses = s6iduki6nnetused['dataset']['value'][1]/s6iduki6nnetused['dataset']['value'][0]
+# print(P_mehed_s6iduki6nnetuses) 
+# 
+# onnetused = fetch_v22rtus(url_vigastused, loo_p2ring_VIG10("2024", "0", "V01-Y34", "0"))
+# rahvaarv = fetch_v22rtus(url_rahvaarv, loo_p2ring_RV022U())
+# P_6nnetusse_sattumine = onnetused['dataset']['value'][0]/rahvaarv['dataset']['value'][0]
+# print(P_6nnetusse_sattumine) 
 #print(json.dumps(data, indent=2))
 
 #print("Status:", response.status_code)
