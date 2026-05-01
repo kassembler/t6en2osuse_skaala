@@ -1,6 +1,7 @@
 import sys
 from PyQt5 import QtWidgets
 import pyqtgraph as pg
+from PyQt5.QtGui import *
 
 from hangi_andmed import hangi_t6en2osused
 
@@ -40,24 +41,20 @@ class ProbabilityLine(QtWidgets.QMainWindow):
         self.plot_widget.addItem(scatter)
 
         #Selgitav tekst iga punkti juures
+        font = QFont('Arial', 11)
         for i, (label, value) in enumerate(data):
-    
-            #Üle ühe silt alla ja üles
-            if i % 2 == 0:
-                y = 0.15   #Üleval
-                anchor = (0.5, 0)
-            else:
-                y = -0.15  #All
-                anchor = (0.5, 1)
-
             text = pg.TextItem(
                 text=f"{label}\n({value:.4f})",
-                anchor=anchor
+                anchor=(0, 0),
+                #angle=75
+                
             )
-            
-            text.setPos(value, y)
+            y_offset = 0.02 + (i % 3) * 0.02
+            text.setPos(value, y_offset)
             self.plot_widget.addItem(text)
-
+            text.setFont(font)
+            line = pg.PlotDataItem(x=[value, value], y=[0, y_offset], pen=pg.mkPen(color=(150, 150, 150), width=1))
+            self.plot_widget.addItem(line)
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
